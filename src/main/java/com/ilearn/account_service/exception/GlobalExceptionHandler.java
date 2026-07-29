@@ -1,11 +1,11 @@
-package com.ilearn.product_service.exception;
+package com.ilearn.account_service.exception;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ilearn.product_service.util.ApiResponse;
-import com.ilearn.product_service.util.AppConstants;
+import com.ilearn.account_service.util.ApiResponse;
+import com.ilearn.account_service.util.AppConstants;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

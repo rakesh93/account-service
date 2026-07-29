@@ -1,4 +1,4 @@
-package com.ilearn.product_service.util;
+package com.ilearn.account_service.util;
 
 public class ApiResponse {
 
