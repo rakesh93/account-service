@@ -4,11 +4,13 @@ public class ApiResponse {
 
 	private int statusCode;
 	private String message;
+	private Object result;
 
-	public ApiResponse(int statusCode, String message) {
+	public ApiResponse(int statusCode, String message, Object result) {
 		super();
 		this.statusCode = statusCode;
 		this.message = message;
+		this.result = result;
 	}
 
 	public int getStatusCode() {
@@ -27,9 +29,17 @@ public class ApiResponse {
 		this.message = message;
 	}
 
-	@Override
-	public String toString() {
-		return "ApiResponse [statusCode=" + statusCode + ", message=" + message + "]";
+	public void setResult(Object result) {
+		this.result= result;
+	}
+	public Object getResult() {
+		return result;
 	}
 
+	@Override
+	public String toString() {
+		return "ApiResponse [statusCode=" + statusCode + ", message=" + message + ", result=" + result + "]";
+	}
+
+	
 }

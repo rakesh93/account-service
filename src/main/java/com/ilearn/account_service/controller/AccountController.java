@@ -2,7 +2,10 @@ package com.ilearn.account_service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +22,20 @@ import jakarta.validation.Valid;
 public class AccountController {
 
 	@Autowired
-	AccountService productService;
+	AccountService accountService;
 	
 	@PostMapping("/createAccount")
 	public ApiResponse createProduct(@Valid @RequestBody AccountModel accountModel) {
-		return productService.createAccount(accountModel);
+		return accountService.createAccount(accountModel);
+	}
+	
+	@GetMapping("/getAccount/{accountNumber}")
+	public ApiResponse getAccount(@PathVariable String accountNumber) {
+		return accountService.getAccountDetails(accountNumber);
+	}
+	
+	@PutMapping("/updateAccount/{accountNumber}")
+	public ApiResponse updateAccount(@PathVariable String accountNumber, @Valid @RequestBody AccountModel accountModel) {
+		return accountService.updateAccount(accountNumber, accountModel);
 	}
 }

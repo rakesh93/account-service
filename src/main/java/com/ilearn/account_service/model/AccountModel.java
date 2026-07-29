@@ -23,8 +23,8 @@ public class AccountModel {
 	private Long accountId;
 	@Column(name = "first_name")
 	private String firstName;
-	@Column(name = "second_name")
-	private String secondName;
+	@Column(name = "last_name")
+	private String lastName;
 	@Column(name = "account_type")
 	private String accountType;
 	@Column(name = "account_number")
@@ -43,12 +43,12 @@ public class AccountModel {
 	public AccountModel() {
 	}
 
-	public AccountModel(Long accountId, String firstName, String secondName, String accountType, String accountNumber,
+	public AccountModel(Long accountId, String firstName, String lastName, String accountType, String accountNumber,
 			String aadharNumber, String mobileNumber) {
 		super();
 		this.accountId = accountId;
 		this.firstName = firstName;
-		this.secondName = secondName;
+		this.lastName = lastName;
 		this.accountType = accountType;
 		this.accountNumber = accountNumber;
 		this.aadharNumber = aadharNumber;
@@ -71,12 +71,12 @@ public class AccountModel {
 		this.firstName = firstName;
 	}
 
-	public String getSecondName() {
-		return secondName;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSecondName(String secondName) {
-		this.secondName = secondName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getAccountType() {
@@ -113,7 +113,7 @@ public class AccountModel {
 
 	@Override
 	public String toString() {
-		return "AccountModel [accountId=" + accountId + ", firstName=" + firstName + ", secondName=" + secondName
+		return "AccountModel [accountId=" + accountId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", aadharNumber=" + aadharNumber
 				+ ", mobileNumber=" + mobileNumber + "]";
 	}
