@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -39,12 +38,14 @@ public class AccountModel {
 	@NotBlank(message = AppConstants.MOBILE_NUMBER)
 	@Pattern(regexp = "^\\d{10}$", message = AppConstants.MOBILE_NUMBER_DIGITS)
 	private String mobileNumber;
+	@Column(name = "is_active")
+	private boolean isActive;
 
 	public AccountModel() {
 	}
 
 	public AccountModel(Long accountId, String firstName, String lastName, String accountType, String accountNumber,
-			String aadharNumber, String mobileNumber) {
+			String aadharNumber, String mobileNumber, boolean isActive) {
 		super();
 		this.accountId = accountId;
 		this.firstName = firstName;
@@ -53,6 +54,15 @@ public class AccountModel {
 		this.accountNumber = accountNumber;
 		this.aadharNumber = aadharNumber;
 		this.mobileNumber = mobileNumber;
+		this.isActive = isActive;
+	}
+
+	public boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public Long getAccountId() {
@@ -114,8 +124,8 @@ public class AccountModel {
 	@Override
 	public String toString() {
 		return "AccountModel [accountId=" + accountId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", aadharNumber=" + aadharNumber
-				+ ", mobileNumber=" + mobileNumber + "]";
+				+ ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", aadharNumber="
+				+ aadharNumber + ", mobileNumber=" + mobileNumber + ", isActive=" + isActive + "]";
 	}
 
 }

@@ -22,7 +22,8 @@ public class AccountService {
 
 	public ApiResponse createAccount(AccountModel accountModel) {
 		if (accountRepository.existsByAccountNumber(accountModel.getAccountNumber())) {
-			return new ApiResponse(AppConstants.FAILURE, AppConstants.ACCOUNT_NUMBER_DUPLICATE,	Collections.emptyList());
+			return new ApiResponse(AppConstants.FAILURE, AppConstants.ACCOUNT_NUMBER_DUPLICATE,
+					Collections.emptyList());
 		}
 
 		if (accountRepository.existsByAadharNumber(accountModel.getAadharNumber())) {
@@ -32,7 +33,7 @@ public class AccountService {
 		if (accountRepository.existsByMobileNumber(accountModel.getMobileNumber())) {
 			return new ApiResponse(AppConstants.FAILURE, AppConstants.MOBILE_NUMBER_DUPLICATE, Collections.emptyList());
 		}
-
+		accountModel.setIsActive(true);
 		AccountModel response = accountRepository.save(accountModel);
 		if (response != null) {
 			logger.info("Account created successfully with accountId {}", accountModel.getAccountId());
@@ -54,22 +55,55 @@ public class AccountService {
 	}
 
 	public ApiResponse updateAccount(String accountNumber, AccountModel accountModel) {
-		
-		 AccountModel existingAccount = accountRepository.findByAccountNumber(accountNumber);
+
+		AccountModel existingAccount = accountRepository.findByAccountNumber(accountNumber);
 
 		if (existingAccount == null) {
 			logger.error("Account not found with accountNumber {}", accountNumber);
 			return new ApiResponse(AppConstants.NOT_FOUND, AppConstants.RESULT_NOT_FOUND, Collections.emptyList());
 		}
-		
+
 		existingAccount.setFirstName(accountModel.getFirstName());
 		existingAccount.setLastName(accountModel.getLastName());
 		existingAccount.setAadharNumber(accountModel.getAadharNumber());
 		existingAccount.setMobileNumber(accountModel.getMobileNumber());
-
+		existingAccount.setIsActive(true);
 		AccountModel updatedAccount = accountRepository.save(existingAccount);
 		if (updatedAccount != null) {
 			logger.info("Account updated successfully with accountId {}", updatedAccount.getAccountId());
+			return new ApiResponse(AppConstants.SUCCESS, AppConstants.UPDATED, updatedAccount);
+		} else {
+			return new ApiResponse(AppConstants.FAILURE, AppConstants.NOT_UPDATED, Collections.emptyList());
+		}
+	}
+
+	public ApiResponse deleteAccount(String accountNumber) {
+
+		AccountModel existingAccount = accountRepository.findByAccountNumber(accountNumber);
+
+		if (existingAccount == null) {
+			logger.error("Account not found with accountNumber {}", accountNumber);
+			return new ApiResponse(AppConstants.NOT_FOUND, AppConstants.RESULT_NOT_FOUND, Collections.emptyList());
+		}
+
+		accountRepository.delete(existingAccount);
+		logger.info("Account deleted successfully with accountId {}", existingAccount.getAccountId());
+		return new ApiResponse(AppConstants.SUCCESS, AppConstants.DELETED, Collections.emptyList());
+	}
+
+	public ApiResponse activateOrDeactiveAccount(String accountNumber, boolean isActive) {
+		
+		AccountModel existingAccount = accountRepository.findByAccountNumber(accountNumber);
+
+		if (existingAccount == null) {
+			logger.error("Account not found with accountNumber {}", accountNumber);
+			return new ApiResponse(AppConstants.NOT_FOUND, AppConstants.RESULT_NOT_FOUND, Collections.emptyList());
+		}
+
+		existingAccount.setIsActive(isActive);
+		AccountModel updatedAccount = accountRepository.save(existingAccount);
+		if (updatedAccount != null) {
+			logger.info("Account status changed successfully with accountId {}", updatedAccount.getAccountId());
 			return new ApiResponse(AppConstants.SUCCESS, AppConstants.UPDATED, updatedAccount);
 		} else {
 			return new ApiResponse(AppConstants.FAILURE, AppConstants.NOT_UPDATED, Collections.emptyList());
