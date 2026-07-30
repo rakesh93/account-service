@@ -26,9 +26,7 @@ public class AccountModel {
 	private String lastName;
 	@Column(name = "account_type")
 	private String accountType;
-	@Column(name = "account_number")
-	@NotBlank(message = AppConstants.ACCOUNT_NUMBER)
-	@Pattern(regexp = "^\\d{10}$", message = AppConstants.ACCOUNT_NUMBER_DIGITS)
+	@Column(name = "account_number")	
 	private String accountNumber;
 	@Column(name = "aadhar_number")
 	@NotBlank(message = AppConstants.AADHAR_NUMBER)

@@ -1,9 +1,14 @@
 package com.ilearn.account_service.service;
 
 import java.util.Collections;
+import java.util.random.RandomGenerator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ilearn.account_service.model.AccountCreatedEvent;
 import com.ilearn.account_service.model.AccountModel;
 import com.ilearn.account_service.repository.AccountRepository;
 import com.ilearn.account_service.util.ApiResponse;
@@ -16,15 +21,14 @@ public class AccountService {
 
 	private final AccountRepository accountRepository;
 
+	@Autowired
+	public AccountProducer accountProducer;
+	
 	public AccountService(AccountRepository accountRepository) {
 		this.accountRepository = accountRepository;
 	}
 
 	public ApiResponse createAccount(AccountModel accountModel) {
-		if (accountRepository.existsByAccountNumber(accountModel.getAccountNumber())) {
-			return new ApiResponse(AppConstants.FAILURE, AppConstants.ACCOUNT_NUMBER_DUPLICATE,
-					Collections.emptyList());
-		}
 
 		if (accountRepository.existsByAadharNumber(accountModel.getAadharNumber())) {
 			return new ApiResponse(AppConstants.FAILURE, AppConstants.AADHAR_NUMBER_DUPLICATE, Collections.emptyList());
@@ -33,9 +37,16 @@ public class AccountService {
 		if (accountRepository.existsByMobileNumber(accountModel.getMobileNumber())) {
 			return new ApiResponse(AppConstants.FAILURE, AppConstants.MOBILE_NUMBER_DUPLICATE, Collections.emptyList());
 		}
+
+		RandomGenerator random = RandomGenerator.getDefault();
+		long accountNumber = random.nextLong(1_000_000_000L, 10_000_000_000L);
+		accountModel.setAccountNumber(String.valueOf(accountNumber));
 		accountModel.setIsActive(true);
 		AccountModel response = accountRepository.save(accountModel);
 		if (response != null) {
+			AccountCreatedEvent event = new AccountCreatedEvent(response.getAccountNumber(), response.getFirstName(),
+					response.getLastName(), response.getMobileNumber());
+			accountProducer.publish(event);
 			logger.info("Account created successfully with accountId {}", accountModel.getAccountId());
 			return new ApiResponse(AppConstants.SUCCESS, AppConstants.CREATED, response);
 		} else {
@@ -92,7 +103,7 @@ public class AccountService {
 	}
 
 	public ApiResponse activateOrDeactiveAccount(String accountNumber, boolean isActive) {
-		
+
 		AccountModel existingAccount = accountRepository.findByAccountNumber(accountNumber);
 
 		if (existingAccount == null) {
