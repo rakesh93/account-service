@@ -1,5 +1,6 @@
 package com.ilearn.account_service.service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.random.RandomGenerator;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ilearn.account_service.kafka.AccountProducer;
 import com.ilearn.account_service.model.AccountCreatedEvent;
 import com.ilearn.account_service.model.AccountModel;
 import com.ilearn.account_service.repository.AccountRepository;
@@ -42,6 +44,7 @@ public class AccountService {
 		long accountNumber = random.nextLong(1_000_000_000L, 10_000_000_000L);
 		accountModel.setAccountNumber(String.valueOf(accountNumber));
 		accountModel.setIsActive(true);
+		accountModel.setCreatedDate(LocalDateTime.now());
 		AccountModel response = accountRepository.save(accountModel);
 		if (response != null) {
 			AccountCreatedEvent event = new AccountCreatedEvent(response.getAccountNumber(), response.getFirstName(),

@@ -1,5 +1,7 @@
 package com.ilearn.account_service.model;
 
+import java.time.LocalDateTime;
+
 import com.ilearn.account_service.util.AppConstants;
 
 import jakarta.persistence.Column;
@@ -38,6 +40,8 @@ public class AccountModel {
 	private String mobileNumber;
 	@Column(name = "is_active")
 	private boolean isActive;
+	@Column(name = "created_date", nullable = false, updatable = false)
+	private LocalDateTime createdDate;
 
 	public AccountModel() {
 	}
@@ -55,6 +59,14 @@ public class AccountModel {
 		this.isActive = isActive;
 	}
 
+	public LocalDateTime getCreatedDate() {
+	    return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+	    this.createdDate = createdDate;
+	}
+	
 	public boolean getIsActive() {
 		return isActive;
 	}
@@ -122,8 +134,8 @@ public class AccountModel {
 	@Override
 	public String toString() {
 		return "AccountModel [accountId=" + accountId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", aadharNumber="
-				+ aadharNumber + ", mobileNumber=" + mobileNumber + ", isActive=" + isActive + "]";
+				+ ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", aadharNumber=" + aadharNumber
+				+ ", mobileNumber=" + mobileNumber + ", isActive=" + isActive + ", createdDate=" + createdDate + "]";
 	}
 
 }

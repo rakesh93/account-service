@@ -1,4 +1,4 @@
-package com.ilearn.account_service.service;
+package com.ilearn.account_service.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
