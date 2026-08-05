@@ -45,11 +45,12 @@ public class AccountService {
 		accountModel.setAccountNumber(String.valueOf(accountNumber));
 		accountModel.setIsActive(true);
 		accountModel.setCreatedDate(LocalDateTime.now());
+		accountModel.setAvailBalance(0.0);
 		AccountModel response = accountRepository.save(accountModel);
 		if (response != null) {
 			AccountCreatedEvent event = new AccountCreatedEvent(response.getAccountNumber(), response.getFirstName(),
 					response.getLastName(), response.getMobileNumber());
-			accountProducer.publish(event);
+			//accountProducer.publish(event);
 			logger.info("Account created successfully with accountId {}", accountModel.getAccountId());
 			return new ApiResponse(AppConstants.SUCCESS, AppConstants.CREATED, response);
 		} else {
@@ -63,7 +64,7 @@ public class AccountService {
 
 		if (accountModel == null) {
 			logger.error("Account not found with accountNumber {}", accountNumber);
-			return new ApiResponse(AppConstants.NOT_FOUND, AppConstants.RESULT_NOT_FOUND, Collections.emptyList());
+			return new ApiResponse(AppConstants.NOT_FOUND, AppConstants.ACCOUNT_NOT_FOUND, Collections.emptyList());
 		}
 		return new ApiResponse(AppConstants.SUCCESS, AppConstants.RESULT_FOUND, accountModel);
 	}

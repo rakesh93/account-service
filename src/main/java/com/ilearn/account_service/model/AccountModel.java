@@ -22,32 +22,44 @@ public class AccountModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long accountId;
+	
 	@Column(name = "first_name")
 	private String firstName;
+	
 	@Column(name = "last_name")
 	private String lastName;
+	
 	@Column(name = "account_type")
 	private String accountType;
-	@Column(name = "account_number")	
+	
+	@Column(name = "account_number")
 	private String accountNumber;
+	
 	@Column(name = "aadhar_number")
 	@NotBlank(message = AppConstants.AADHAR_NUMBER)
 	@Pattern(regexp = "^\\d{12}$", message = AppConstants.AADHAR_NUMBER_DIGITS)
 	private String aadharNumber;
+	
 	@Column(name = "mobile_number")
 	@NotBlank(message = AppConstants.MOBILE_NUMBER)
 	@Pattern(regexp = "^\\d{10}$", message = AppConstants.MOBILE_NUMBER_DIGITS)
 	private String mobileNumber;
+	
 	@Column(name = "is_active")
 	private boolean isActive;
+	
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private LocalDateTime createdDate;
+
+	@Column(name = "available_Balance")
+	private double availBalance;
 
 	public AccountModel() {
 	}
 
 	public AccountModel(Long accountId, String firstName, String lastName, String accountType, String accountNumber,
-			String aadharNumber, String mobileNumber, boolean isActive) {
+			String aadharNumber, String mobileNumber, boolean isActive, LocalDateTime createdDate,
+			double availBalance) {
 		super();
 		this.accountId = accountId;
 		this.firstName = firstName;
@@ -57,16 +69,30 @@ public class AccountModel {
 		this.aadharNumber = aadharNumber;
 		this.mobileNumber = mobileNumber;
 		this.isActive = isActive;
+		this.createdDate = createdDate;
+		this.availBalance = availBalance;
+	}
+	
+	public double getAvailBalance() {
+		return availBalance;
+	}
+
+	public void setAvailBalance(double availBalance) {
+		this.availBalance = availBalance;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public LocalDateTime getCreatedDate() {
-	    return createdDate;
+		return createdDate;
 	}
 
 	public void setCreatedDate(LocalDateTime createdDate) {
-	    this.createdDate = createdDate;
+		this.createdDate = createdDate;
 	}
-	
+
 	public boolean getIsActive() {
 		return isActive;
 	}
@@ -135,7 +161,8 @@ public class AccountModel {
 	public String toString() {
 		return "AccountModel [accountId=" + accountId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", aadharNumber=" + aadharNumber
-				+ ", mobileNumber=" + mobileNumber + ", isActive=" + isActive + ", createdDate=" + createdDate + "]";
+				+ ", mobileNumber=" + mobileNumber + ", isActive=" + isActive + ", createdDate=" + createdDate
+				+ ", availBalance=" + availBalance + "]";
 	}
 
 }
