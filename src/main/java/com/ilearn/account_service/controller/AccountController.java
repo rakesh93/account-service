@@ -50,4 +50,10 @@ public class AccountController {
 	public ApiResponse activateOrDeactiveAccount(@PathVariable String accountNumber, @PathVariable boolean status) {
 		return accountService.activateOrDeactiveAccount(accountNumber,status);
 	}
+	
+	@GetMapping("/getAllAccount")
+	public ApiResponse getAllAccount() {
+		return accountService.getAllAccount();
+	}
+	
 }

@@ -2,6 +2,7 @@ package com.ilearn.account_service.service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.random.RandomGenerator;
 
 import org.slf4j.Logger;
@@ -123,5 +124,14 @@ public class AccountService {
 		} else {
 			return new ApiResponse(AppConstants.FAILURE, AppConstants.NOT_UPDATED, Collections.emptyList());
 		}
+	}
+
+	public ApiResponse getAllAccount() {
+		 List<AccountModel> accountModel=accountRepository.findAll();
+		 if(accountModel.isEmpty()) {
+			 return new ApiResponse(AppConstants.NOT_FOUND, AppConstants.RESULT_NOT_FOUND, Collections.emptyList()); 
+		 }
+		 List<String> accountNumber=accountModel.stream().map(AccountModel::getAccountNumber).toList();
+		 return new ApiResponse(AppConstants.SUCCESS, AppConstants.RESULT_FOUND, accountNumber); 
 	}
 }
