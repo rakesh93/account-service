@@ -19,7 +19,6 @@ import com.ilearn.account_service.util.ApiResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/accountservice")
 public class AccountController {
 
